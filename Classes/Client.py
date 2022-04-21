@@ -1,40 +1,18 @@
 import socket, sys
 
-def send(message):
-    tcpSocket = socket.create_connection(('localhost', 88)) # create connection to server
-    
-    try:
-        data = bytes(message, 'UTF-8') # sends message to the server
-        tcpSocket.sendall(data)
-    
-    finally:
-        print("Closing socket") # closing the socket
-        tcpSocket.close()
+class Client:
+    def __init__(self, host, port):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((host, port))
 
-def recieve():
-    # take the server name and port name
-  
-    host = 'local host'
-    port = 5000
-    
-    # create a socket at client side
-    # using TCP / IP protocol
-    s = socket.socket(socket.AF_INET,
-                    socket.SOCK_STREAM)
-    
-    # connect it to server and port
-    # number on local computer.
-    s.connect(('127.0.0.1', port))
-    
-    # receive message string from
-    # server, at a time 1024 B
-    msg = s.recv(1024)
-    
-    # repeat as long as message
-    # string are not empty
-    while msg:
-        print('Received:' + msg.decode())
-        msg = s.recv(1024)
-    
-    # disconnect the client
-    s.close()
+    def receive(self):
+        msg = self.socket.recv(1024) # recieve string from server 1024 bytes at a time
+        fullMessage = msg
+        
+        while msg: # repeat as long as message string not empty
+            print('Received:' + msg.decode())
+            fullMessage += msg # concatenate messages
+            msg = self.socket.recv(1024)
+
+        self.socket.close() # disconnect client
+        return fullMessage

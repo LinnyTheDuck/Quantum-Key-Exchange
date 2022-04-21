@@ -1,17 +1,17 @@
 import random
-global value, polarisation # polar is either 1 or 0
 
-def new(v, p): # this is wrong
-    value = v
-    polarisation = p
+class Qubit:
+    def __init__(self, v, p):
+        self.value = v
+        self.polarisation = p # can only be a 1 or 0
 
-def set(v, p):
-    value = v
-    polarisation = p
+    def set(self, v, p):
+        self.value = v
+        self.polarisation = p
 
-def measure(polarisation):
-    if(value == polarisation): # return value if polarisation matches ?? is it supposed to match value
-        return value
-    else: # set the polarization to the new type - I don't feel this is right
-        polarisation = random.randint(0,1) # Set the value to 0 or 1 with 50/50 chance
-        return value # Return the new value
+    def measure(self, p):
+        if(self.value == p): # return value if polarisation matches ?? is it supposed to match value
+            return self.value
+        else: # set the polarization to the new type - I don't feel this is right
+            self.polarisation = random.randint(0,1) # Set the value to 0 or 1 with 50/50 chance
+            return self.value # Return the new value

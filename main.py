@@ -1,4 +1,4 @@
-from Classes import Client, Server
+from Quantum import Client, Server, MiddleMan
 
 host = 'localhost'
 port = 50003 # might need to keep changing this if it's being used
@@ -6,6 +6,7 @@ port = 50003 # might need to keep changing this if it's being used
 def main():
     server = Server.Server(host, port)
     client = Client.Client(host, port)
+    #midman = MiddleMan.MiddleMan()
 
     server.accept() # get the server running
     server.send("Hello World!") # send something to the client

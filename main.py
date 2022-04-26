@@ -12,11 +12,11 @@ def main():
     client = Client.Client(serverAddress)
     midman = MiddleMan.MiddleMan(serverAddress, clientAddress)
 
-    client.send('Hello There!') # send something to the client
+    client.send('Hello There!') # send from the client
     message = server.receive()
     print(message) # print what the client recieved
 
-    server.send('General Kenobi') # send something to the server
+    server.send('General Kenobi') # send from the server
     message = client.receive()
     print(message) # print what the server recieved
     server.close()

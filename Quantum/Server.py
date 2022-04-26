@@ -1,5 +1,5 @@
-#from Qubit import *
-import socket, sys, random #, Qubit
+from Quantum.Qubit import *
+import socket, sys, random
 
 ENCODING = "utf8"
 class Server:

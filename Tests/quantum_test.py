@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 from Quantum.Qubit import *
 from Quantum.XOR import *
+from Quantum import Server, Client
 import os
+
+# ports n stuf
+host = "127.0.0.1"
+port = 54321
 
 def test_qubit():
     toggle = True # toggle for which bit in polarisation is up
@@ -32,7 +37,7 @@ def test_xor():
     original = XOR.cipher(key,encrypted)
     assert (message == original) # check if both encryption and decryption works with integrity of orig msg
 
-'''
+
 def test_qke_16():
     msg = "my names Jeff"
     recv = qke_algorithm(16, msg)
@@ -50,8 +55,16 @@ def test_qke_1024():
 
 def qke_algorithm(keylen, msg):
     # setup server and client ONLY
+    serverAddress = (host, port)
+    server = Server.Server(serverAddress) # use serverAddress for BOTH if just client/server
+    client = Client.Client(serverAddress)
+    
     # QKE key exchange, pass in keylen
+    ### Write some code here ###
+
     # server sends message to client
-    print("hello world")
+    client.send(msg) # send something to the server
+    msg = server.receive()
+
+    server.close()
     return msg
-'''

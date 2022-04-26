@@ -1,4 +1,4 @@
-#from Qubit import *
+from Quantum.Qubit import *
 import socket #, Qubit
 
 ENCODING = "utf8"

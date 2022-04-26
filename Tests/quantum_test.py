@@ -43,6 +43,17 @@ def test_xor():
     original = XOR.cipher(key,encrypted)
     assert (message == original) # check if both encryption and decryption works with integrity of orig msg
 
-def test_qke():
+def test_qke_16():
     print("hi")
     assert(1 == 1)
+
+def test_qke_256():
+    print("hi")
+    assert(1 == 1)
+
+def test_qke_1024():
+    print("hi")
+    assert(1 == 1)
+
+def qke_algorithm():
+    print("hello world")

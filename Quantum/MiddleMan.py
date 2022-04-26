@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-from .Interface import NodeInterface
+import socket, sys
 
 class MiddleMan(NodeInterface):
     def __init__(self, upstream):

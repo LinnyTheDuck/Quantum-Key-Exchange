@@ -1,5 +1,6 @@
+Old_Stuff/
 Quantum/__pycache__
 testing/
 .pytest_cache/
 Tests/__pycache__
-Old/
+*.pdf

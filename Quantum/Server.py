@@ -1,20 +1,28 @@
-from Qubit import *
-import socket, sys, random
+#from Qubit import *
+import socket, sys, random #, Qubit
 
+ENCODING = "utf8"
 class Server:
-    def __init__(self, host, port):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create socket
-        self.socket.bind((host, port)) # bind socket
-        self.socket.listen(2) # listen, allows 2 connections
-        self.polar = 0b0 # this bit will be replaced, just making it global ig
-        self.rpolar = 0b0
-    
-    def accept(self):
-        self.stream, addr = self.socket.accept() # client accepts connection
-        print("CONNECTION FROM:", str(addr)) # connection sucsessful, display client addr
+    def __init__(self, addr):
+        self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
+        self.connection.bind(addr) # bind socket
 
-    def send(self, message):
-        self.stream.send(message.encode()) # send message to client
+        self.addr = addr # keep clients address
+
+        #self.polar = 0b0 # this bit will be replaced, just making it global ig
+        #self.rpolar = 0b0
+
+    def send(self, msg):
+        self.connection.sendto(msg.encode(ENCODING),self.addr) # send message to client
+
+    def receive(self):
+        requestData, self.addr = self.connection.recvfrom(1024)
+        return requestData.decode(ENCODING)
+
+    def close(self):
+        self.connection.close() # disconnect the server
+
+'''
 
     def sendqubits(self, length): # experiment with 16, 256, 1024
         qubit_array = [] # array of qubits
@@ -37,7 +45,5 @@ class Server:
         self.stream.send(self.polar) # send the polarisation
 
     def recievepolar(self):
-        self.rpolar = self.socket.recv(1024)
-
-    def close(self):
-        self.stream.close() # disconnect the server
+        self.rpolar = self.connection.recv(1024)
+'''

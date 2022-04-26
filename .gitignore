@@ -4,3 +4,4 @@ testing/
 .pytest_cache/
 Tests/__pycache__
 *.pdf
+main_thread.py

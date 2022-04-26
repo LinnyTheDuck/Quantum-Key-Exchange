@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-import socket, sys
+import socket
 
-class MiddleMan(NodeInterface):
-    def __init__(self, upstream):
-        self.bFreeze = False
-        self.MitmResponse = None
-        self.CapturedPacket = None
-
-        super().__init__(upstream, None)
-
-        assert(self.key == None)
+class MiddleMan:
+    def __init__(self, clientAddr, servAddr):
+        self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
+        self.connection.bind(addr) # bind socket
 
 
     def SendUpstream(self, data):

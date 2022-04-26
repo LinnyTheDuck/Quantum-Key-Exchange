@@ -3,22 +3,6 @@ from Quantum.Qubit import *
 from Quantum.XOR import *
 import os
 
-'''
-def test_server():
-    psk = os.urandom(32)
-    serv = Server(key=psk)
-    client = Client(serv, key=psk)
-
-    data = client.SendUpstream("test")
-    serv.RecieveDownstream(data)
-
-    assert(1==1)
-
-    I did was basically stored the message and key as byte arrays, then just looped over the key and performed a bitwise-XOR between the two bytes to produce the encrypted byte. 
-    For testing the qubit class, I did a test to check the value would eventually change if I kept measuring with the wrong polarity.
-    Since if it were a randomized process then it would eventually have to change
-'''
-
 def test_qubit():
     toggle = True # toggle for which bit in polarisation is up
     qubit = Qubit(1,0) # enter a 1 or 0
@@ -33,8 +17,13 @@ def test_qubit():
     assert(value == 0) # check it's a 0
 
 def test_xor():
-    key = 0b0010010010010010
+    key = 0b001
     message = 0b0100110101100101
+
+    # get length of message
+    length = len(bin(message)) - 2 # -2 to remove 0b
+    key = XOR.repeatKey(key, length)
+
     encrypted = XOR.cipher(key, message)
 
     # expected = 0b0110100111110111 # just used as a midway check
@@ -43,17 +32,26 @@ def test_xor():
     original = XOR.cipher(key,encrypted)
     assert (message == original) # check if both encryption and decryption works with integrity of orig msg
 
+'''
 def test_qke_16():
-    print("hi")
-    assert(1 == 1)
+    msg = "my names Jeff"
+    recv = qke_algorithm(16, msg)
+    assert(msg == recv)
 
 def test_qke_256():
-    print("hi")
-    assert(1 == 1)
+    msg = "I am the Globglogabgalab"
+    recv = qke_algorithm(256, msg)
+    assert(msg == recv)
 
 def test_qke_1024():
-    print("hi")
-    assert(1 == 1)
+    msg = "it's the most wonderful time of the YE"
+    recv = qke_algorithm(1024, msg)
+    assert(msg == recv)
 
-def qke_algorithm():
+def qke_algorithm(keylen, msg):
+    # setup server and client ONLY
+    # QKE key exchange, pass in keylen
+    # server sends message to client
     print("hello world")
+    return msg
+'''

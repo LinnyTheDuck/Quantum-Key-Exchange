@@ -5,8 +5,8 @@ A dummy server, client and middleman to test xor and qubits encryption
 ## Tests Setup and Execution
 
 `virtualenv -p python3.9 <environmentName>` or whatever version of python you are using <br>
-`. <environmentName>/bin/activate` <br> to create a new virtual environment
-`pip install pytest` <br> to install dependancies
+`. <environmentName>/bin/activate` to create a new virtual environment <br>
+`pip install pytest` to install dependancies <br>
 `python -m pytest` to run all tests <br>
 Use `deactivate` to exit virtual environment
 

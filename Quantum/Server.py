@@ -6,7 +6,6 @@ class Server:
     def __init__(self, addr):
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
         self.connection.bind(addr) # bind socket
-
         self.addr = addr # keep clients address
 
         #self.polar = 0b0 # this bit will be replaced, just making it global ig

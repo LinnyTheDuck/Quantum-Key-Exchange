@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 import socket
 
+ENCODING = "utf8"
 class MiddleMan:
-    def __init__(self, clientAddr, servAddr):
-        self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
-        self.connection.bind(addr) # bind socket
+    def __init__(self, servAddr, clientAddr):
+        self.clientConnection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
+        self.clientConnection.bind(clientAddr) # bind socket
+        self.clientAddr = clientAddr
+
+        self.serverConnection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # create socket
+        self.servAddr = servAddr
+
+    def receiveFromClient(self):
+        clientReqData, self.clientAddr = self.clientConnection.recvfrom(1024)
+        return clientReqData
+
+    def sendToClient(self, msg):
+        self.clientConnection.sendto(msg.encode(ENCODING), self.clientAddr)
+
+    def recieveFromServer(self):
+        serverReqData, self.serverAddr = self.serverConnection.recvfrom(1024)
+        return serverReqData
+
+    def sendToServer(self, msg):
+        self.serverConnection.sendto(msg.encode(ENCODING), self.serverAddr)
 
 
-    def SendUpstream(self, data):
-        if(self.upstream):
-            return self.upstream.ReceiveDownstream(data)
-
-
-    def ReceiveDownstream(self, data):
-        # Received from below
-        self.CapturedPacket = data
-
-        # Do this first
-        clientData = self.SendUpstream(data)
-
-        if not self.bFreeze:
-            self.MitmResponse = data
-
-        return clientData
-
-    def Freeze(self):
-        self.bFreeze = True

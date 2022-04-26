@@ -5,9 +5,7 @@ ENCODING = "utf8"
 class Client:
     def __init__(self, addr):
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #self.connection.connect(addr)
-
-        self.addr = addr
+        self.addr = addr # keep server address
 
         #self.polar = 0b0 # this bit will be replaced, just making it global ig
         #self.rpolar = 0b0

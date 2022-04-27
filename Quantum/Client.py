@@ -20,7 +20,7 @@ class Client:
         self.connection.sendto(msg, self.addr)
 
     def receive(self):
-        requestData, self.addr = self.connection.recvfrom(1024)
+        requestData, self.addr = self.connection.recvfrom(4096)
         key = self.key #format(0b001, '03b')
         requestData = self.decrypt(key, requestData)
         requestData = requestData.decode(ENCODING)
@@ -62,7 +62,7 @@ class Client:
         self.connection.sendto(self.clientPolar.encode(ENCODING), self.addr) # send the polarisation
 
     def recievepolar(self):
-        requestData, self.addr = self.connection.recvfrom(1024)
+        requestData, self.addr = self.connection.recvfrom(4096)
         self.serverPolar = requestData.decode(ENCODING)
 
         self.key = self.getkey()

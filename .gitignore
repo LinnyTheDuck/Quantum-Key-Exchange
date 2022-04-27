@@ -3,5 +3,7 @@ Quantum/__pycache__
 testing/
 .pytest_cache/
 Tests/__pycache__
-*.pdf
+Report/*
+!Report/Assignment \2.pdf
+COMPX304-22A A2.docx.pdf
 main_thread.py

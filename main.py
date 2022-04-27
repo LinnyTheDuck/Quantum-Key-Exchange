@@ -9,19 +9,26 @@ def main():
     clientAddress = (host, clientPort)
 
     server = Server.Server(serverAddress) # use serverAddress for BOTH if just client/server
-    client = Client.Client(serverAddress)
+    client = Client.Client(clientAddress)
     midman = MiddleMan.MiddleMan(serverAddress, clientAddress)
 
-    client.sendqubits(8)
+    client.sendqubits(8) # initial qke exchange
+    midman.receiveFromClient()
     server.recievequbit()
     server.sendpolar()
+    midman.recieveFromServer()
+    #midman.sendToClient()
     client.recievepolar()
 
     client.send('Hello There!') # send from the client
+    midman.receiveFromClient() # midman intercepts and passes to server
+    #midman.sendToServer()
     message = server.receive()
     print(message) # print what the client recieved
 
     server.send('General Kenobi') # send from the server
+    midman.recieveFromServer() # midman intercepts and passes to server
+    #midman.sendToClient()
     message = client.receive()
     print(message) # print what the server recieved
     server.close()

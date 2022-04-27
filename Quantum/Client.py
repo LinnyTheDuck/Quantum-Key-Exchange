@@ -81,5 +81,5 @@ class Client:
             if anded[i] == "1":
                 key += self.clientValues[i] # append to string
         
-        print(key)
+        #print(key)
         return key

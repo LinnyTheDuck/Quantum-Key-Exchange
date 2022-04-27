@@ -67,7 +67,7 @@ def qke_algorithm(keylen, msg):
 
     # server sends message to client
     client.send(msg) # send something to the server
-    msg = server.receive().strip().strip('\x00') # why do I have to strip the null bytes here?
+    msg = server.receive().strip('\x00') # why do I have to strip the null bytes here?
 
     server.close()
     return msg

@@ -25,4 +25,14 @@ class MiddleMan:
     def sendToServer(self, msg):
         self.serverConnection.sendto(msg.encode(ENCODING), self.serverAddr)
 
+    def measureQubits(self):
+        print("hi")
 
+    def recordPolar(self):
+        print("hi")
+
+    def getKey(self):
+        print("hi")
+
+    def decodeMsg(self):
+        print("hi")

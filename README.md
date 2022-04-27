@@ -16,5 +16,4 @@ run `python main.py`
 
 ### Todos
 
-- Implement QKE exchange and tests
 - Create MITM attack and connection

@@ -87,5 +87,5 @@ class Server:
             if anded[i] == "1":
                 key += self.serverValues[i] # append to string
         
-        print(key)
+        #print(key)
         return key

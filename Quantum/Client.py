@@ -13,14 +13,14 @@ class Client:
         #self.array = [] # array or recieved bits
 
     def send(self, msg):
-        key = 0b001
+        key = format(0b001, '03b')
         msg = msg.encode(ENCODING)
         msg = self.encrypt(key, msg)
         self.connection.sendto(msg, self.addr)
 
     def receive(self):
         requestData, self.addr = self.connection.recvfrom(1024)
-        key = 0b001
+        key = format(0b001, '03b')
         requestData = self.decrypt(key, requestData)
         requestData = requestData.decode(ENCODING)
         return requestData

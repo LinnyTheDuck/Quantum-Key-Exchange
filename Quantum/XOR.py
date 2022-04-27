@@ -10,17 +10,23 @@ class XOR:
 
     def repeatKey(key, length):
         origkey = key # preserve the original key
-        keylen = len(bin(key)) - 2 # get length of key
+        keylen = len(key)# get length of key
         length -= keylen # the rest of the length we have to fill up
-        while length != 0:
-            if length >= keylen:
-                key << keylen # shift it over by num of bits in key
-                key = key and origkey
-                length -= keylen
-            else: # keylen < length
-                key << length
-                origkey >> (keylen - (length % keylen) )
-                key = key and origkey
-                length = 0
-        print(key)
-        return key
+
+        while length > keylen:
+            key += origkey
+            #print(key)
+            keylen = len(key) - 2
+            
+        if keylen < length:
+            rem = keylen - (length % keylen)
+            first_char = ""
+            for i in range(0, rem):
+                first_char = first_char + origkey[i]
+            key += first_char
+            keylen = len(key)
+
+        #print(keylen)
+        #print(length)
+        #print(key)
+        return int(key, 2)

@@ -1,4 +1,3 @@
-from email import message
 from Quantum.Qubit import *
 from Quantum.XOR import *
 import socket, sys, random
@@ -14,16 +13,17 @@ class Server:
         #self.rpolar = 0b0
 
     def send(self, msg):
-        key = 0b001
+        key = format(0b001, '03b')
         msg = msg.encode(ENCODING)
         msg = self.encrypt(key, msg)
         self.connection.sendto(msg,self.addr) # send message to client
 
     def receive(self):
         requestData, self.addr = self.connection.recvfrom(1024)
-        key = 0b001
+        key = format(0b001, '03b')
         requestData = self.decrypt(key, requestData)
         requestData = requestData.decode(ENCODING)
+        #requestData.strip().strip('\x00') # strip the null bytes
         return requestData
 
     def close(self):

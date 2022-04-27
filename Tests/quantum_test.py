@@ -61,9 +61,12 @@ def qke_algorithm(keylen, msg):
     
     # QKE key exchange, pass in keylen
     ### Write some code here ###
-
-    # encrypt Message using xor
-    
+    '''
+    client.sendqubits(keylen)
+    server.recievequbit()
+    server.sendpolar()
+    client.recievepolar()
+    '''
 
     # server sends message to client
     client.send(msg) # send something to the server

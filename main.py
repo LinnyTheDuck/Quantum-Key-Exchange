@@ -12,6 +12,11 @@ def main():
     client = Client.Client(serverAddress)
     midman = MiddleMan.MiddleMan(serverAddress, clientAddress)
 
+    client.sendqubits(8)
+    server.recievequbit()
+    server.sendpolar()
+    client.recievepolar()
+
     client.send('Hello There!') # send from the client
     message = server.receive()
     print(message) # print what the client recieved

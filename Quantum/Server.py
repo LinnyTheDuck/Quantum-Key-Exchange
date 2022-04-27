@@ -9,8 +9,10 @@ class Server:
         self.connection.bind(addr) # bind socket
         self.addr = addr # keep clients address
 
-        #self.polar = 0b0 # this bit will be replaced, just making it global ig
-        #self.rpolar = 0b0
+        self.clientPolar = ""
+        self.serverPolar = ""
+        self.serverValues = ""
+        self.key = ""
 
     def send(self, msg):
         key = format(0b001, '03b')
@@ -45,25 +47,43 @@ class Server:
         return message.to_bytes(length, byteorder=sys.byteorder)
 
     # Qubit Stuff
-    def sendqubits(self, length): # experiment with 16, 256, 1024
-        qubit_array = [] # array of qubits
-        polar_bit = random.getrandbits(1)
-        self.polar = polar_bit # set the first bit
-        qubit = Qubit(random.getrandbits(1), polar_bit)
-        qubit_array.append(qubit) # add to the array
+    def recievequbit(self):
+        requestData, self.addr = self.connection.recvfrom(4096)
+        requestData = requestData.decode(ENCODING)
 
-        for i in range(length - 1): # generate length many polarisations
-            self.polar << 1 # bit shift to the left
-            polar_bit = random.getrandbits(1) # new polar bit 
-            self.polar = self.polar or polar_bit # OR the bits together
-            qubit = Qubit(random.getrandbits(1), polar_bit) # create a qubit
-            qubit_array.append(qubit) # add to the array
-            #self.stream.send(qubit) # send the qubit? Or should I make an arary of them? 
-              
-        self.stream.send(qubit_array) # send the array
+        chunks = requestData.split(',')
+        self.clientPolar = chunks[0]
+        values = chunks[1]
+        length = len(self.clientPolar)
+
+        for i in range(length):
+            qubit = Qubit(int(values[i]),int(self.clientPolar[i]))
+            measure = qubit.measure(random.randint(0,1)) # measure with a random value
+            self.serverPolar += str(measure)
+
+        self.key = self.getkey()
 
     def sendpolar(self):
-        self.stream.send(self.polar) # send the polarisation
+        self.connection.sendto(self.serverPolar.encode(ENCODING), self.addr) # send the polarisation
 
     def recievepolar(self):
-        self.rpolar = self.connection.recv(1024)
+        requestData, self.addr = self.connection.recvfrom(1024)
+        self.clientPolar = requestData.decode(ENCODING)
+
+    def getkey(self):
+        length = len(self.clientPolar) # get length of string
+        anded = ""
+        for i in range(length): # and them
+            if self.clientPolar[i] == self.serverPolar[i]:
+                anded += "1"
+            else:
+                anded += "0"
+
+        key = ""
+        for i in anded:
+            for j in self.serverValues:
+                if i == "1":
+                    key += j # append to string
+        
+        #print(key)
+        return key

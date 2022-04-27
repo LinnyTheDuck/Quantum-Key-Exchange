@@ -8,9 +8,10 @@ class Client:
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.addr = addr # keep server address
 
-        #self.polar = 0b0 # this bit will be replaced, just making it global ig
-        #self.rpolar = 0b0
-        #self.array = [] # array or recieved bits
+        self.clientValues = ""
+        self.clientPolar = ""
+        self.serverPolar = ""
+        self.key = ""
 
     def send(self, msg):
         key = format(0b001, '03b')
@@ -44,16 +45,42 @@ class Client:
         return message.to_bytes(length, byteorder=sys.byteorder)
 
     #Qubit stuff
-    def recievequbit(self):
-        msg = self.socket.recv(4096) # recieve array from server in one chunk
+    def sendqubits(self, length): # experiment with 16, 256, 1024
+        # I dont *actually* have to make qubits here, right?
+        count = 0
+        while count < length:
+            value_bit = random.randint(0,1)
+            polar_bit = random.randint(0,1)
+            self.clientValues += str(value_bit)
+            self.clientPolar += str(polar_bit)
+            count += 1
 
-        for i in msg: # for each item in the array
-            self.array.append(i.measure)
-        
-        self.polar = 0b0
+        msg = self.clientPolar + ',' + self.clientValues # concatenate the values
+        self.connection.sendto(msg.encode(ENCODING), self.addr) # send the array
 
     def sendpolar(self):
-        self.stream.send(self.polar) # send the polarisation
+        self.connection.sendto(self.clientPolar.encode(ENCODING), self.addr) # send the polarisation
 
     def recievepolar(self):
-        self.rpolar = self.socket.recv(1024)
+        requestData, self.addr = self.connection.recvfrom(1024)
+        self.serverPolar = requestData.decode(ENCODING)
+
+        self.key = self.getkey()
+    
+    def getkey(self):
+        length = len(self.clientPolar) # get length of string
+        anded = ""
+        for i in range(length): # and them
+            if self.clientPolar[i] == self.serverPolar[i]:
+                anded += "1"
+            else:
+                anded += "0"
+
+        key = ""
+        for i in anded:
+            for j in self.clientValues:
+                if i == "1":
+                    key += j # append to string
+        
+        print(key)
+        return key

@@ -77,10 +77,9 @@ class Client:
                 anded += "0"
 
         key = ""
-        for i in anded:
-            for j in self.clientValues:
-                if i == "1":
-                    key += j # append to string
+        for i in range(length):
+            if anded[i] == "1":
+                key += self.clientValues[i] # append to string
         
         print(key)
         return key

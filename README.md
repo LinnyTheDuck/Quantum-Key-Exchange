@@ -4,10 +4,10 @@ A dummy server, client and middleman to test xor and qubits encryption
 
 ## Tests Setup and Execution
 
-`virtualenv -p python3.9 <environmentName>` or whatever version of python you are using <br>
-`. <environmentName>/bin/activate` to create a new virtual environment <br>
-`pip install pytest` to install dependancies <br>
-`python -m pytest` to run all tests <br>
+To create a new virtual environment: `virtualenv -p python3.9 <environmentName>` or whatever version of python you are using <br>
+To activate the environment: `. <environmentName>/bin/activate` <br>
+To install dependancies: `pip install pytest`  <br>
+To run all tests: `python -m pytest` <br>
 Use `deactivate` to exit virtual environment
 
 ## MiddleMan Attack Execution

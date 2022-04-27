@@ -13,22 +13,19 @@ def main():
     midman = MiddleMan.MiddleMan(serverAddress, clientAddress)
 
     client.sendqubits(8) # initial qke exchange
-    midman.receiveFromClient()
+    midman.receiveFromClient() # middleman takes qubits, measures them and takes client's polar
     server.recievequbit()
     server.sendpolar()
-    midman.recieveFromServer()
-    #midman.sendToClient()
+    midman.recieveFromServer() # middleman takes server's polar and generates a key
     client.recievepolar()
 
     client.send('Hello There!') # send from the client
     midman.receiveFromClient() # midman intercepts and passes to server
-    #midman.sendToServer()
     message = server.receive()
     print(message) # print what the client recieved
 
     server.send('General Kenobi') # send from the server
-    midman.recieveFromServer() # midman intercepts and passes to server
-    #midman.sendToClient()
+    midman.recieveFromServer() # midman intercepts and passes to client
     message = client.receive()
     print(message) # print what the server recieved
     server.close()

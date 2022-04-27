@@ -60,13 +60,10 @@ def qke_algorithm(keylen, msg):
     client = Client.Client(serverAddress)
     
     # QKE key exchange, pass in keylen
-    ### Write some code here ###
-    '''
     client.sendqubits(keylen)
     server.recievequbit()
     server.sendpolar()
     client.recievepolar()
-    '''
 
     # server sends message to client
     client.send(msg) # send something to the server

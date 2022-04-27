@@ -15,14 +15,14 @@ class Server:
         self.key = ""
 
     def send(self, msg):
-        key = format(0b001, '03b')
+        key = self.key #format(0b001, '03b')
         msg = msg.encode(ENCODING)
         msg = self.encrypt(key, msg)
         self.connection.sendto(msg,self.addr) # send message to client
 
     def receive(self):
         requestData, self.addr = self.connection.recvfrom(1024)
-        key = format(0b001, '03b')
+        key = self.key #format(0b001, '03b')
         requestData = self.decrypt(key, requestData)
         requestData = requestData.decode(ENCODING)
         #requestData.strip().strip('\x00') # strip the null bytes

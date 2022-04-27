@@ -59,7 +59,14 @@ class Server:
         for i in range(length):
             qubit = Qubit(int(values[i]),int(self.clientPolar[i]))
             measure = qubit.measure(random.randint(0,1)) # measure with a random value
-            self.serverPolar += str(measure)
+            self.serverValues += str(measure)
+
+        # might as well make a server polarisation here...
+        count = 0
+        while count < length:
+            polar_bit = random.randint(0,1)
+            self.serverPolar += str(polar_bit)
+            count += 1
 
         self.key = self.getkey()
 
@@ -85,5 +92,5 @@ class Server:
                 if i == "1":
                     key += j # append to string
         
-        #print(key)
+        print(key)
         return key

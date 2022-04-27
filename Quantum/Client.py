@@ -1,5 +1,6 @@
 from Quantum.Qubit import *
-import socket #, Qubit
+from Quantum.XOR import *
+import socket, sys #, Qubit
 
 ENCODING = "utf8"
 class Client:
@@ -12,16 +13,37 @@ class Client:
         #self.array = [] # array or recieved bits
 
     def send(self, msg):
-        self.connection.sendto(msg.encode(ENCODING), self.addr)
+        key = 0b001
+        msg = msg.encode(ENCODING)
+        msg = self.encrypt(key, msg)
+        self.connection.sendto(msg, self.addr)
 
     def receive(self):
         requestData, self.addr = self.connection.recvfrom(1024)
-        return requestData.decode(ENCODING)
+        key = 0b001
+        requestData = self.decrypt(key, requestData)
+        requestData = requestData.decode(ENCODING)
+        return requestData
     
     def close(self):
         self.connection.close()
 
-'''
+    # Encryption stuff
+    def encrypt(self, key, message):
+        message = int.from_bytes(message, byteorder=sys.byteorder)
+        length = len(bin(message)) - 2 # -2 to remove 0b
+        key = XOR.repeatKey(key, length)
+        encrypted = XOR.cipher(key, message)
+        return encrypted.to_bytes(length, byteorder=sys.byteorder)
+
+    def decrypt(self, key, encrypted): # the same as encrypt but exists for clearing my head
+        encrypted = int.from_bytes(encrypted, byteorder=sys.byteorder)
+        length = len(bin(encrypted)) - 2 # -2 to remove 0b
+        key = XOR.repeatKey(key, length)
+        message = XOR.cipher(key, encrypted)
+        return message.to_bytes(length, byteorder=sys.byteorder)
+
+    #Qubit stuff
     def recievequbit(self):
         msg = self.socket.recv(4096) # recieve array from server in one chunk
 
@@ -35,4 +57,3 @@ class Client:
 
     def recievepolar(self):
         self.rpolar = self.socket.recv(1024)
-'''

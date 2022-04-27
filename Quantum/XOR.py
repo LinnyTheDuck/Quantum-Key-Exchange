@@ -22,4 +22,5 @@ class XOR:
                 origkey >> (keylen - (length % keylen) )
                 key = key and origkey
                 length = 0
+        print(key)
         return key

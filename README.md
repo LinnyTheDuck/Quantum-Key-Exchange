@@ -10,7 +10,7 @@ To install dependancies: `pip install pytest`  <br>
 To run all tests: `python -m pytest` <br>
 Use `deactivate` to exit virtual environment
 
-All 5 tests will pass:
+#### All 5 tests will pass:
 - XOR unit test
 - Qubit unit test
 - QKE test where client sends data to the server (at qubit lengths 16, 256 and 1024)

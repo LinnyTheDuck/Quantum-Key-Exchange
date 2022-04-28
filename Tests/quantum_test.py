@@ -6,7 +6,7 @@ import os
 
 # ports n stuf
 host = "127.0.0.1"
-port = 54322
+port = 54328
 
 def test_qubit():
     toggle = True # toggle for which bit in polarisation is up
@@ -39,7 +39,7 @@ def test_xor():
 
 
 def test_qke_16():
-    msg = "my names Jeff"
+    msg = "my name's jeff"
     recv = qke_algorithm(16, msg)
     assert(msg == recv)
 
@@ -67,6 +67,8 @@ def qke_algorithm(keylen, msg):
 
     # server sends message to client
     client.send(msg) # send something to the server
+    len = client.length() # passing the length
+    server.setlen(len)
     msg = server.receive().strip('\x00') # why do I have to strip the null bytes here?
 
     server.close()

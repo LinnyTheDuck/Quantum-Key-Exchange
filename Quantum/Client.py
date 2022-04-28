@@ -13,6 +13,8 @@ class Client:
         self.serverPolar = ""
         self.key = ""
 
+        self.len = 0
+
     def send(self, msg):
         key = self.key #format(0b001, '03b')
         msg = msg.encode(ENCODING)
@@ -32,14 +34,19 @@ class Client:
     # Encryption stuff
     def encrypt(self, key, message):
         message = int.from_bytes(message, byteorder=sys.byteorder)
+        #print("Before Encryption:       "+str(message))
         length = len(bin(message)) - 2 # -2 to remove 0b
+        self.len = length
+        #print(length)
         key = XOR.repeatKey(key, length)
+        #print("Total Key C: " + str(key))
         encrypted = XOR.cipher(key, message)
+        #print("After Client Encryption: "+str(encrypted))
         return encrypted.to_bytes(length, byteorder=sys.byteorder)
 
     def decrypt(self, key, encrypted): # the same as encrypt but exists for clearing my head
         encrypted = int.from_bytes(encrypted, byteorder=sys.byteorder)
-        length = len(bin(encrypted)) - 2 # -2 to remove 0b
+        length = self.len #len(bin(encrypted)) - 2 # -2 to remove 0b
         key = XOR.repeatKey(key, length)
         message = XOR.cipher(key, encrypted)
         return message.to_bytes(length, byteorder=sys.byteorder)
@@ -81,5 +88,12 @@ class Client:
             if anded[i] == "1":
                 key += self.clientValues[i] # append to string
         
-        #print(key)
+        #print("Client Key: "+key)
+        #print("Client Key Length: "+str(len(key)))
         return key
+    
+    def setlen(self, len):
+        self.len = len
+
+    def length(self): # cheating the length here
+        return self.len

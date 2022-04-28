@@ -14,6 +14,8 @@ class Server:
         self.serverValues = ""
         self.key = ""
 
+        self.len = 0
+
     def send(self, msg):
         key = self.key #format(0b001, '03b')
         msg = msg.encode(ENCODING)
@@ -35,15 +37,20 @@ class Server:
     def encrypt(self, key, message):
         message = int.from_bytes(message, byteorder=sys.byteorder)
         length = len(bin(message)) - 2 # -2 to remove 0b
+        self.len = length
         key = XOR.repeatKey(key, length)
         encrypted = XOR.cipher(key, message)
         return encrypted.to_bytes(length, byteorder=sys.byteorder)
 
     def decrypt(self, key, encrypted): # the same as encrypt but exists for clearing my head
         encrypted = int.from_bytes(encrypted, byteorder=sys.byteorder)
-        length = len(bin(encrypted)) - 2 # -2 to remove 0b
+        #print("Recieved From Client:    " + str(encrypted))
+        length = self.len #len(bin(encrypted)) -2# -2 to remove 0b
+        #print(length)
         key = XOR.repeatKey(key, length)
+        #print("Total Key S: " + str(key))
         message = XOR.cipher(key, encrypted)
+        #print("After Decryption:  " + str(message))
         return message.to_bytes(length, byteorder=sys.byteorder)
 
     # Qubit Stuff
@@ -87,5 +94,13 @@ class Server:
             if anded[i] == "1":
                 key += self.serverValues[i] # append to string
         
-        #print(key)
+        #print("Server Key: "+key)
+        #print("Server Key Length: "+str(len(key)))
+        self.len = len(key)
         return key
+
+    def setlen(self, len):
+        self.len = len
+
+    def length(self): # cheating the length here
+        return self.len

@@ -20,12 +20,18 @@ def main():
     client.recievepolar()
 
     client.send('Hello There!') # send from the client
+    len = client.length() # passing the length
+    midman.setlen(len)
     midman.receiveFromClient() # midman intercepts and passes to server
+    server.setlen(len)
     message = server.receive()
     print(message) # print what the client recieved
 
     server.send('General Kenobi') # send from the server
+    len = server.length() # passing the length
+    midman.setlen(len)
     midman.recieveFromServer() # midman intercepts and passes to client
+    client.setlen(len)
     message = client.receive()
     print(message) # print what the server recieved
     server.close()

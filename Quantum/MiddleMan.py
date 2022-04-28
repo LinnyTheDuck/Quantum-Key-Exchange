@@ -19,6 +19,8 @@ class MiddleMan:
         self.serverPolarMeasured = "" # the polar values to send to the client after measuring the qubits
         self.key = ""
 
+        self.len = 0
+
     def receiveFromClient(self):
         clientReqData, self.clientAddr = self.clientConnection.recvfrom(1024)
         flag = True # just a flag to trigger utf8 encoding
@@ -111,3 +113,9 @@ class MiddleMan:
         message = XOR.cipher(key, encrypted)
         decodedmsg = message.to_bytes(length, byteorder=sys.byteorder)
         return decodedmsg
+
+    def setlen(self, len):
+        self.len = len
+
+    def length(self): # cheating the length here
+        return self.len

@@ -26,7 +26,11 @@ class Server:
         requestData, self.addr = self.connection.recvfrom(4096)
         key = self.key #format(0b001, '03b')
         requestData = self.decrypt(key, requestData)
-        requestData = requestData.decode(ENCODING)
+        try:
+            requestData = requestData.decode(ENCODING)
+        except:
+            print("Cannot decode UTF-8")
+            return str(requestData)
         #requestData.strip().strip('\x00') # strip the null bytes
         return requestData
 
@@ -94,7 +98,7 @@ class Server:
             if anded[i] == "1":
                 key += self.serverValues[i] # append to string
         
-        #print("Server Key: "+key)
+        print("Server Key: "+key)
         #print("Server Key Length: "+str(len(key)))
         self.len = len(key)
         return key

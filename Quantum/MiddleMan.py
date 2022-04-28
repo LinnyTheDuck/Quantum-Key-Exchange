@@ -30,17 +30,20 @@ class MiddleMan:
             clientReqData = self.measureQubits(clientReqData)
         else: # key has already been worked out by this stage
             copy = self.decodeMsg(clientReqData) # new copy of clientReqData so we don't need to re-encode
-            copy = copy.decode(ENCODING) #decode utf8 after xor otherwise will break
-            print("MiddleMan Recieved Message: " + copy)
+            try:
+                copy = copy.decode(ENCODING) #decode utf8 after xor otherwise will break
+            except:
+                print("Cannot decode UTF-8")
+            print("MiddleMan Recieved Message: " + str(copy))
             flag = False # toggle flag to send without reencoding
 
         self.sendToServer(clientReqData, flag)
 
     def sendToClient(self, msg, flag):
-        if flag:
+        '''if flag:
             self.clientConnection.sendto(msg.encode(ENCODING), self.clientAddr)
-        else:
-            self.clientConnection.sendto(msg, self.clientAddr)
+        else:'''
+        self.clientConnection.sendto(msg, self.clientAddr)
 
     def recieveFromServer(self):
         serverReqData, self.servAddr = self.serverConnection.recvfrom(1024)
@@ -70,7 +73,7 @@ class MiddleMan:
 
         # simulate measurement of qubits, value of data will change
         length = len(self.clientPolar)
-        self.clientValues = ""
+        self.clientValues = "" # can get rid of this line
         #serverPolar = ""
 
         for i in range(length):
@@ -80,7 +83,7 @@ class MiddleMan:
             qubit = Qubit(int(values[i]),int(self.clientPolar[i]))
             measure = qubit.measure(polar_bit) # measure with a random value
             self.clientValues += str(measure)
-            self.serverPolarMeasured += str(qubit.getPolar)
+            self.serverPolarMeasured += str(qubit.getPolar())
         
         dataRepacked = self.serverPolarMeasured + ',' + self.clientValues # repack the values
         return dataRepacked
@@ -102,13 +105,13 @@ class MiddleMan:
             if anded[i] == "1":
                 key += self.clientValues[i] # append to string
         
-        print(key)
+        print("Middle Man Key: " + key)
         self.key = key
         #return key
 
     def decodeMsg(self, msg):
         encrypted = int.from_bytes(msg, byteorder=sys.byteorder) # decode xor
-        length = len(bin(encrypted)) - 2 # -2 to remove 0b
+        length = self.len #len(bin(encrypted)) - 2 # -2 to remove 0b
         key = XOR.repeatKey(self.key, length)
         message = XOR.cipher(key, encrypted)
         decodedmsg = message.to_bytes(length, byteorder=sys.byteorder)

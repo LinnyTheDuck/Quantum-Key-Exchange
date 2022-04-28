@@ -88,7 +88,7 @@ class Client:
             if anded[i] == "1":
                 key += self.clientValues[i] # append to string
         
-        #print("Client Key: "+key)
+        print("Client Key: "+key)
         #print("Client Key Length: "+str(len(key)))
         return key
     

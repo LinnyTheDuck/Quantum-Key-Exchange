@@ -12,7 +12,7 @@ def main():
     client = Client.Client(clientAddress)
     midman = MiddleMan.MiddleMan(serverAddress, clientAddress)
 
-    client.sendqubits(8) # initial qke exchange
+    client.sendqubits(16) # initial qke exchange
     midman.receiveFromClient() # middleman takes qubits, measures them and takes client's polar
     server.recievequbit()
     server.sendpolar()

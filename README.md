@@ -17,7 +17,7 @@ Use `deactivate` to exit virtual environment
 
 ## MiddleMan Attack Execution
 
-Enter the virtual environment
+Enter the virtual environment <br>
 Run `python main.py`
 
 The keys for the server, client and middleman will be displayed.

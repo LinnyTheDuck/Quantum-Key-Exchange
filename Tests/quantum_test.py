@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import pytest
 from Quantum.Qubit import *
 from Quantum.XOR import *
 from Quantum import Server, Client
@@ -37,23 +38,14 @@ def test_xor():
     original = XOR.cipher(key,encrypted)
     assert (message == original) # check if both encryption and decryption works with integrity of orig msg
 
+testdata = [
+    (16, "my name's jeff"),
+    (256, "I am the Globglogabgalab"),
+    (1024, "it's the most wonderful time of the YE")
+]
 
-def test_qke_16():
-    msg = "my name's jeff"
-    recv = qke_algorithm(16, msg)
-    assert(msg == recv)
-
-def test_qke_256():
-    msg = "I am the Globglogabgalab"
-    recv = qke_algorithm(256, msg)
-    assert(msg == recv)
-
-def test_qke_1024():
-    msg = "it's the most wonderful time of the YE"
-    recv = qke_algorithm(1024, msg)
-    assert(msg == recv)
-
-def qke_algorithm(keylen, msg):
+@pytest.mark.parametrize("keylen, msg", testdata)
+def test_qke_algorithm(keylen, msg):
     # setup server and client ONLY
     serverAddress = (host, port)
     server = Server.Server(serverAddress) # use serverAddress for BOTH if just client/server
@@ -69,7 +61,7 @@ def qke_algorithm(keylen, msg):
     client.send(msg) # send something to the server
     len = client.length() # passing the length
     server.setlen(len)
-    msg = server.receive().strip('\x00') # why do I have to strip the null bytes here?
+    recv = server.receive().strip('\x00') # why do I have to strip the null bytes here?
 
     server.close()
-    return msg
+    assert(msg == recv)

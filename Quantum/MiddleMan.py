@@ -22,7 +22,7 @@ class MiddleMan:
         self.len = 0
 
     def receiveFromClient(self):
-        clientReqData, self.clientAddr = self.clientConnection.recvfrom(1024)
+        clientReqData, self.clientAddr = self.clientConnection.recvfrom(4096)
         flag = True # just a flag to trigger utf8 encoding
 
         if self.clientValues == "": # havent gotten qubits yet
@@ -46,7 +46,7 @@ class MiddleMan:
         self.clientConnection.sendto(msg, self.clientAddr)
 
     def recieveFromServer(self):
-        serverReqData, self.servAddr = self.serverConnection.recvfrom(1024)
+        serverReqData, self.servAddr = self.serverConnection.recvfrom(4096)
         flag = True # just a flag to trigger utf8 encoding
 
         if self.key == "": # no key yet, looks like we steal the polarisation
